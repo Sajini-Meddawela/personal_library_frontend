@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { moduleService } from '../../services/moduleService';
 import toast from 'react-hot-toast';
 import Modal from '../common/Modal';
-import { BookOpen } from 'lucide-react';
+import { Edit2, BookOpen } from 'lucide-react';
+import { Module } from '../../types';
 
-interface CreateModuleModalProps {
+interface EditModuleModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  semesterId: string;
+  module: Module;
 }
 
 interface FormData {
@@ -32,11 +33,11 @@ const colorOptions = [
   { value: '#14B8A6', label: 'Teal', class: 'bg-teal-500' },
 ];
 
-const CreateModuleModal: React.FC<CreateModuleModalProps> = ({ 
+const EditModuleModal: React.FC<EditModuleModalProps> = ({ 
   isOpen, 
   onClose, 
   onSuccess, 
-  semesterId 
+  module 
 }) => {
   const { 
     register, 
@@ -47,8 +48,12 @@ const CreateModuleModal: React.FC<CreateModuleModalProps> = ({
     formState: { errors, isSubmitting } 
   } = useForm<FormData>({
     defaultValues: {
-      color: '#3B82F6',
-      status: 'IN_PROGRESS'
+      name: module.name,
+      code: module.code || '',
+      lecturer: module.lecturer || '',
+      description: module.description || '',
+      color: module.color || '#3B82F6',
+      status: module.status
     }
   });
 
@@ -58,20 +63,33 @@ const CreateModuleModal: React.FC<CreateModuleModalProps> = ({
     setValue('color', colorValue, { shouldValidate: true });
   };
 
+  // Reset form when module changes
+  useEffect(() => {
+    if (isOpen && module) {
+      reset({
+        name: module.name,
+        code: module.code || '',
+        lecturer: module.lecturer || '',
+        description: module.description || '',
+        color: module.color || '#3B82F6',
+        status: module.status
+      });
+    }
+  }, [module, isOpen, reset]);
+
   const onSubmit = async (data: FormData) => {
     try {
-      await moduleService.create(semesterId, data);
-      toast.success('Module created successfully');
-      reset();
+      await moduleService.update(module.id, data);
+      toast.success('Module updated successfully');
       onSuccess();
       onClose();
     } catch (error) {
-      toast.error('Failed to create module');
+      toast.error('Failed to update module');
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create New Module">
+    <Modal isOpen={isOpen} onClose={onClose} title="Edit Module">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Color Preview */}
         <div className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
@@ -175,12 +193,12 @@ const CreateModuleModal: React.FC<CreateModuleModalProps> = ({
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Creating...
+                Saving...
               </>
             ) : (
               <>
-                <BookOpen size={16} />
-                Create Module
+                <Edit2 size={16} />
+                Save Changes
               </>
             )}
           </button>
@@ -190,4 +208,4 @@ const CreateModuleModal: React.FC<CreateModuleModalProps> = ({
   );
 };
 
-export default CreateModuleModal;
+export default EditModuleModal;
