@@ -2,9 +2,8 @@ import api from './api';
 import { File } from '../types';
 
 export const fileService = {
-  getByModule: async (moduleId: string, category?: string): Promise<File[]> => {
-    const params = category ? { category } : {};
-    const response = await api.get(`/modules/${moduleId}/files`, { params });
+  getByModule: async (moduleId: string): Promise<File[]> => {
+    const response = await api.get(`/files/module/${moduleId}`);
     return response.data;
   },
   
@@ -26,8 +25,13 @@ export const fileService = {
     return response.data;
   },
   
-  search: async (params: { q?: string; type?: string; category?: string }): Promise<File[]> => {
+  search: async (params: { q?: string; type?: string; category?: string; moduleId?: string }): Promise<File[]> => {
     const response = await api.get('/files/search', { params });
+    return response.data;
+  },
+  
+  getFavorites: async (): Promise<File[]> => {
+    const response = await api.get('/files/favorites');
     return response.data;
   },
 };

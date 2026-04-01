@@ -19,6 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, setOpen }) => {
   const navItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/semesters', icon: BookOpen, label: 'Semesters' },
+    { path: '/modules', icon: BookOpen, label: 'Modules' },
     { path: '/search', icon: Search, label: 'Search' },
   ];
 

@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
               bg-white dark:bg-gray-800 rounded-xl shadow-xl z-50 w-full ${sizeClasses[size]}
-              max-h-[95vh] flex flex-col`}
+              max-h-[50vh] flex flex-col`}
           >
             {/* Fixed Header */}
             <div className="flex items-center justify-between p-6 border-b dark:border-gray-700 flex-shrink-0">

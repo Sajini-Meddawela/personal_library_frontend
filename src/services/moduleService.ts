@@ -3,7 +3,7 @@ import { Module } from '../types';
 
 export const moduleService = {
   getBySemester: async (semesterId: string): Promise<Module[]> => {
-    const response = await api.get(`/semesters/${semesterId}/modules`);
+    const response = await api.get(`/modules/semester/${semesterId}`);
     return response.data;
   },
   
@@ -13,7 +13,7 @@ export const moduleService = {
   },
   
   create: async (semesterId: string, data: Partial<Module>): Promise<Module> => {
-    const response = await api.post(`/semesters/${semesterId}/modules`, data);
+    const response = await api.post(`/modules/semester/${semesterId}`, data);
     return response.data;
   },
   
@@ -23,6 +23,7 @@ export const moduleService = {
   },
   
   delete: async (id: string): Promise<void> => {
-    await api.delete(`/modules/${id}`);
+    const response = await api.delete(`/modules/${id}`);
+    return response.data;
   },
 };

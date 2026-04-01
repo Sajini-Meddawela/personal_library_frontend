@@ -24,6 +24,7 @@ export interface Module {
   description?: string;
   orderIndex: number;
   semesterId: string;
+  semester?: Semester;  
   createdAt: string;
   updatedAt: string;
   files?: File[];
@@ -37,7 +38,10 @@ export interface File {
   originalName: string;
   type: 'PDF' | 'VIDEO' | 'DOCUMENT' | 'IMAGE' | 'OTHER';
   category: 'LECTURE_MATERIAL' | 'VIDEO' | 'ASSIGNMENT' | 'REFERENCE_PAPER' | 'EBOOK' | 'NOTES' | 'OTHER';
-  filePath: string;
+  cloudinaryPublicId: string;
+  cloudinaryUrl: string;
+  optimizedUrl?: string;
+  thumbnailUrl?: string;
   fileSize: number;
   mimeType: string;
   description?: string;
@@ -45,9 +49,9 @@ export interface File {
   isFavorite: boolean;
   metadata?: any;
   moduleId: string;
+  module?: Module;  
   createdAt: string;
   updatedAt: string;
-  module?: Module;
 }
 
 export interface Note {
